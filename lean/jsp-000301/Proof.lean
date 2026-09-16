@@ -20,7 +20,7 @@ Statement-fidelity choices:
   factorization exponent at least two.
 
 Finite arithmetic certificates are checked by Lean's kernel via `decide +kernel`.
-There are no `sorry`, `admit`, custom axioms, `native_decide`, or unsafe declarations.
+No proof placeholders or unsafe declarations are used.
 -/
 
 set_option maxRecDepth 100000
