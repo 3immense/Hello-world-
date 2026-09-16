@@ -8,7 +8,7 @@ consecutive positive integers are powerful, at least one of them is a square.
 
 Witnesses: 12167 and 12168.
 
-This file intentionally uses only Lean's bundled `Std` library.  The finite
+This file intentionally uses only Lean's bundled `Std` library. The finite
 checks are kernel-evaluated with `decide +kernel`; there are no `sorry`,
 `admit`, custom axioms, or `native_decide` calls.
 -/
@@ -22,8 +22,7 @@ namespace JSP000301
 def Prime (p : Nat) : Prop :=
   2 ≤ p ∧ ∀ d : Nat, d ∣ p → d = 1 ∨ d = p
 
-/-- A positive natural number is powerful iff every prime divisor occurs to
-at least the second power. -/
+/-- A positive natural number is powerful iff the square of every prime divisor divides it. -/
 def Powerful (n : Nat) : Prop :=
   0 < n ∧ ∀ p : Nat, Prime p → p ∣ n → p * p ∣ n
 
@@ -41,8 +40,7 @@ theorem powerful_of_bounded_check (n : Nat) (hn : 0 < n)
     have hle : p ≤ n := Nat.le_of_dvd hn hpn
     exact hcheck ⟨p, by omega⟩ hp hpn
 
-/-- `12167 = 23^3` is powerful.  Lean checks every possible prime divisor
-below or equal to 12167. -/
+/-- `12167 = 23^3` is powerful. Lean checks every possible prime divisor. -/
 theorem powerful_12167 : Powerful 12167 := by
   apply powerful_of_bounded_check 12167 (by decide)
   decide +kernel
@@ -52,8 +50,7 @@ theorem powerful_12168 : Powerful 12168 := by
   apply powerful_of_bounded_check 12168 (by decide)
   decide +kernel
 
-/-- No number strictly between `110^2 = 12100` and `111^2 = 12321` can be a
-perfect square. -/
+/-- No number strictly between `110^2 = 12100` and `111^2 = 12321` can be a perfect square. -/
 theorem not_square_between_110_111 (n : Nat)
     (hlo : 12100 < n) (hhi : n < 12321) : ¬ Square n := by
   rintro ⟨k, hk⟩
@@ -69,11 +66,9 @@ theorem counterexample :
     ∃ n : Nat,
       Powerful n ∧ Powerful (n + 1) ∧ ¬ Square n ∧ ¬ Square (n + 1) := by
   refine ⟨12167, powerful_12167, ?_, ?_, ?_⟩
-  · norm_num
-    exact powerful_12168
+  · simpa using powerful_12168
   · exact not_square_between_110_111 12167 (by decide) (by decide)
-  · norm_num
-    exact not_square_between_110_111 12168 (by decide) (by decide)
+  · simpa using not_square_between_110_111 12168 (by decide) (by decide)
 
 /-- Therefore the universal assertion in JSP-000301 is false. -/
 theorem original_claim_false :
