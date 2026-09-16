@@ -1,4 +1,7 @@
-import Mathlib
+import Mathlib.Data.Nat.Factorization.Basic
+import Mathlib.Data.Nat.Prime.Basic
+import Mathlib.Algebra.Group.Even
+import Mathlib.Tactic
 
 /-!
 JSP-000301
